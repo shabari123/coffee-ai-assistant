@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual Environment
+.venv/
+venv/
+
+# Environment Variables
+.env
+
+# IDE
+.vscode/
+.idea/
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
+
+# Python Cache
+.pytest_cache/
+.mypy_cache/
+
+# ChromaDB
+vector_db/
+
+# Redis dump
+dump.rdb
+
+# Coverage
+.coverage
+htmlcov/
+
+# Build
+dist/
+build/
+
+# OS
+Thumbs.db
