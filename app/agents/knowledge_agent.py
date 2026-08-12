@@ -1,11 +1,18 @@
 from app.agents.base_agent import BaseAgent
-from app.models.chat_message import ChatMessage
+from app.models.agent_context import AgentContext
 from app.registry.tool_registry import ToolRegistry
+from app.models.agent_response import AgentResponse
 
 
 class KnowledgeAgent(BaseAgent):
-    def chat(self, messages: list[ChatMessage]) -> str:
-        return self.gemini_service.generate_chat(
-            messages=messages,
+
+    def chat(self, context: AgentContext) -> AgentResponse:
+        result = self.gemini_service.generate_chat(
+            messages=context.messages,
             tools=ToolRegistry.knowledge_tools(),
+        )
+
+        return AgentResponse(
+            response=result.text,
+            products=[],
         )

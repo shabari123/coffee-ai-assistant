@@ -2,11 +2,12 @@ from app.agents.base_agent import BaseAgent
 from app.models.agent_context import AgentContext
 from app.models.chat_message import ChatMessage
 from app.registry.tool_registry import ToolRegistry
+from app.models.agent_response import AgentResponse
 
 
 class OrderAgent(BaseAgent):
 
-    def chat(self, context: AgentContext) -> str:
+    def chat(self, context: AgentContext) -> AgentResponse:
 
         prompt = """
 You are Swasthya Coffee's order support assistant.
@@ -35,6 +36,7 @@ Keep responses friendly and concise.
 """
 
         messages = context.messages.copy()
+
         messages.append(
             ChatMessage(
                 role="user",
@@ -42,7 +44,12 @@ Keep responses friendly and concise.
             )
         )
 
-        return self.gemini_service.generate_chat(
+        result = self.gemini_service.generate_chat(
             messages=messages,
             tools=ToolRegistry.order_tools(),
+        )
+
+        return AgentResponse(
+            response=result.text,
+            products=[],
         )

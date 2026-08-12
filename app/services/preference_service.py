@@ -10,7 +10,7 @@ class PreferenceService:
     def __init__(self):
         self.redis = RedisService()
 
-    def _key(self, session_id: str):
+    def _key(self, session_id: str) -> str:
         return f"preference:{session_id}"
     
     def get(self, session_id: str) -> UserPreference:
@@ -25,7 +25,7 @@ class PreferenceService:
             **json.loads(data)
         )
     
-    def save(self, session_id: str, preference: UserPreference):
+    def save(self, session_id: str, preference: UserPreference) -> None:
         self.redis.set(
             self._key(session_id),
             json.dumps(preference.model_dump()), expiry=REDIS_EXPIRY)

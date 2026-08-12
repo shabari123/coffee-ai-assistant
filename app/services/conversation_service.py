@@ -23,7 +23,7 @@ class ConversationService:
             for message in messages
         ]
 
-    def save_history(self, session_id: str, messages: list[ChatMessage]):
+    def save_history(self, session_id: str, messages: list[ChatMessage]) -> None:
         data = json.dumps(
             [
                 message.model_dump()
@@ -36,7 +36,7 @@ class ConversationService:
             data, expiry=REDIS_EXPIRY
         )
 
-    def add_user_message(self, session_id: str, message: str):
+    def add_user_message(self, session_id: str, message: str) -> None:
         history = self.get_history(session_id)
 
         history.append(
@@ -48,7 +48,7 @@ class ConversationService:
 
         self.save_history(session_id, history)
 
-    def add_assistant_message(self, session_id: str, message: str):
+    def add_assistant_message(self, session_id: str, message: str) -> None:
         history = self.get_history(session_id)
 
         history.append(
@@ -60,7 +60,7 @@ class ConversationService:
 
         self.save_history(session_id, history)
 
-    def clear_history(self, session_id: str):
+    def clear_history(self, session_id: str) -> None:
 
         self.redis.delete(
             self._key(session_id)

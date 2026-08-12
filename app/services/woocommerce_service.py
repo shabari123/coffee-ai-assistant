@@ -24,6 +24,7 @@ class WooCommerceService:
             stock_status=product_data["stock_status"],
             category=[c["name"] for c in product_data["categories"]],
             image_url=product_data["images"][0]["src"] if product_data["images"] else None,
+            product_url=product_data["permalink"],
         )
 
     def get_products(self) -> list[Product]:

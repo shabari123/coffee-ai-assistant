@@ -4,6 +4,7 @@ from app.config import GEMINI_API_KEY
 from app.services.gemini_service import GeminiService
 from app.api.chat import router as chat_router
 import logging
+from fastapi.middleware.cors import CORSMiddleware
 
 logging.basicConfig(
     level=logging.INFO,
@@ -11,6 +12,16 @@ logging.basicConfig(
 )
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/")
 def home():
