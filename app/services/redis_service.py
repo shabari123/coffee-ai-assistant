@@ -1,12 +1,30 @@
 import redis
-from app.config import REDIS_HOST, REDIS_PORT, REDIS_DB
+
+from app.config import (
+    REDIS_URL,
+    REDIS_HOST,
+    REDIS_PORT,
+    REDIS_DB,
+)
 
 
 class RedisService:
 
     def __init__(self):
-        self.client = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB, decode_responses=True)
-    
+
+        if REDIS_URL:
+            self.client = redis.from_url(
+                REDIS_URL,
+                decode_responses=True
+            )
+        else:
+            self.client = redis.Redis(
+                host=REDIS_HOST,
+                port=REDIS_PORT,
+                db=REDIS_DB,
+                decode_responses=True
+            )
+
     def get(self, key: str):
         return self.client.get(key)
 
