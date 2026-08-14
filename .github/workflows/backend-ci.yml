@@ -16,6 +16,7 @@ jobs:
       WOOCOMMERCE_URL: "https://example.com"
       WOOCOMMERCE_CONSUMER_KEY: "test"
       WOOCOMMERCE_CONSUMER_SECRET: "test"
+      GEMINI_API_KEY: "test"
 
     steps:
       - name: Checkout code
