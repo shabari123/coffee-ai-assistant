@@ -12,6 +12,11 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    env:
+      WOOCOMMERCE_URL: "https://example.com"
+      WOOCOMMERCE_CONSUMER_KEY: "test"
+      WOOCOMMERCE_CONSUMER_SECRET: "test"
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
