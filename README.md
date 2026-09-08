@@ -29,7 +29,6 @@ WooCommerce store.
 
 ## Architecture
 
-``` text
 Customer
    │
    ▼
@@ -57,7 +56,7 @@ RouterAgent
    │                               ChromaDB
    │
    └── OrderAgent ────────────────► WooCommerce REST API
-```
+
 
 ## Backend
 
@@ -131,7 +130,6 @@ Used for questions such as:
 
 It uses the RAG pipeline:
 
-``` text
 Question
    ↓
 Gemini Embedding
@@ -143,7 +141,7 @@ Relevant chunks
 Gemini
    ↓
 Answer
-```
+
 
 ### OrderAgent
 
@@ -164,9 +162,8 @@ The application stores:
 
 The configured expiry is:
 
-``` text
 24 hours
-```
+
 
 In production, the Render Key Value service is Valkey-compatible and the
 backend can connect using `REDIS_URL`.
@@ -177,7 +174,6 @@ The knowledge base is built from website content.
 
 The ingestion process:
 
-``` text
 WebsiteLoader
     ↓
 TextChunker
@@ -185,25 +181,23 @@ TextChunker
 Gemini Embedding
     ↓
 ChromaDB
-```
+
 
 Run ingestion locally with:
 
-``` bash
+ bash
 python -m scripts.ingest_knowledge
-```
+
 
 The configured collection is:
 
-``` text
 swasthya_coffee
-```
+
 
 The current implementation stores ChromaDB under:
 
-``` text
 ./vector_db
-```
+
 
 Because this is local persistent storage, production deployment should
 be reviewed if the service is expected to restart or scale across
@@ -216,7 +210,6 @@ The frontend is a React 19 + Vite application.
 
 Main components:
 
-``` text
 src/
 ├── App.jsx
 ├── main.jsx
@@ -231,22 +224,21 @@ src/
 ├── utils/
 │   └── session.js
 └── styles/
-```
+
 
 The API base URL is read from:
 
-``` text
 VITE_API_URL
-```
+
 
 The frontend sends:
 
-``` json
+ json
 {
   "session_id": "browser-session-id",
   "message": "Recommend a strong coffee"
 }
-```
+
 
 The session ID is generated with `crypto.randomUUID()` and stored in
 browser `localStorage`.
@@ -255,7 +247,7 @@ browser `localStorage`.
 
 ### Backend
 
-``` env
+ env
 GEMINI_API_KEY=
 GEMINI_MODEL=
 
@@ -265,33 +257,33 @@ WOOCOMMERCE_CONSUMER_SECRET=
 WEBSITE_URL=
 
 REDIS_URL=
-```
+
 
 The backend also supports the local Redis configuration:
 
-``` env
+ env
 REDIS_HOST=
 REDIS_PORT=6379
 REDIS_DB=0
-```
+
 
 ### Frontend
 
-``` env
+ env
 VITE_API_URL=
-```
+
 
 Example local frontend value:
 
-``` env
+ env
 VITE_API_URL=http://localhost:8000
-```
+
 
 Example production value:
 
-``` env
+ env
 VITE_API_URL=https://swasthya-coffee-api.onrender.com
-```
+
 
 ### Important
 
@@ -302,7 +294,7 @@ service configuration.
 
 ## Local backend setup
 
-``` bash
+ bash
 git clone <backend-repository>
 cd coffee-ai-assistant
 
@@ -312,35 +304,33 @@ source .venv/bin/activate
 pip install -r requirements.txt
 
 uvicorn app.main:app --reload
-```
+
 
 Backend:
 
-``` text
 http://localhost:8000
-```
+
 
 ## Local frontend setup
 
-``` bash
+ bash
 git clone <frontend-repository>
 cd coffee-ai-ui
 
 npm install
 npm run dev
-```
+
 
 Frontend:
 
-``` text
 http://localhost:5173
-```
+
 
 Create a local `.env`:
 
-``` env
+ env
 VITE_API_URL=http://localhost:8000
-```
+
 
 ## Production deployment
 
@@ -350,9 +340,9 @@ Hosted on Render as a Python web service.
 
 Typical start command:
 
-``` bash
+ bash
 uvicorn app.main:app --host 0.0.0.0 --port $PORT
-```
+
 
 ### Frontend
 
@@ -360,15 +350,14 @@ Hosted on Render as a Static Site.
 
 Build command:
 
-``` bash
+ bash
 npm install; npm run build
-```
+
 
 Publish directory:
 
-``` text
 dist
-```
+
 
 ### Redis
 
@@ -376,18 +365,17 @@ Hosted as a Render Key Value service using Valkey.
 
 The backend uses the internal Redis/Valkey connection URL through:
 
-``` env
+ env
 REDIS_URL=
-```
+
 
 ### CORS
 
 The backend currently allows:
 
-``` text
 http://localhost:5173
 https://swasthya-coffee-ui.onrender.com
-```
+
 
 If the frontend URL changes, update the backend CORS configuration.
 
@@ -409,13 +397,12 @@ the backend API URL. Backend secrets must stay on the backend.
 
 The project uses two repositories:
 
-``` text
 coffee-ai-assistant
     → FastAPI / AI backend
 
 coffee-ai-ui
     → React / Vite frontend
-```
+
 
 This separation allows the frontend and backend to be deployed
 independently.
@@ -424,28 +411,28 @@ independently.
 
 ### Backend
 
-``` bash
+ bash
 uvicorn app.main:app --reload
 python -m scripts.ingest_knowledge
-```
+
 
 ### Frontend
 
-``` bash
+ bash
 npm install
 npm run dev
 npm run build
 npm run lint
-```
+
 
 ### Git
 
-``` bash
+ bash
 git status
 git add .
 git commit -m "your message"
 git push
-```
+
 
 ## Current limitations / next improvements
 
